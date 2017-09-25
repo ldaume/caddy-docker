@@ -1,7 +1,7 @@
 caddy
 =====
 
-A [Docker](https://docker.com) image for [Caddy](https://caddyserver.com). This image includes the [git](https://caddyserver.com/docs/http.git) plugin.
+A [Docker](https://docker.com) image for [Caddy](https://caddyserver.com). This image includes the [git](https://caddyserver.com/docs/http.git) and [ipfilter](https://caddyserver.com/docs/http.ipfilter) plugin.
 
 ### License
 
