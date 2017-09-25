@@ -13,9 +13,7 @@ RUN git clone https://github.com/mholt/caddy -b "v${version}" /go/src/github.com
     && git checkout -b "v${version}"
 
 # ipfilter plugin
-#RUN go get github.com/oschwald/maxminddb-golang
 RUN go get github.com/pyed/ipfilter
-#RUN git clone https://github.com/pyed/ipfilter /go/src/github.com/pyed/ipfilter
 
 # integrate ipfilter plugin
 RUN printf 'package caddyhttp\nimport _ "github.com/pyed/ipfilter"' > \
@@ -23,11 +21,17 @@ RUN printf 'package caddyhttp\nimport _ "github.com/pyed/ipfilter"' > \
 
 # git plugin
 RUN go get github.com/abiosoft/caddy-git
-#RUN git clone https://github.com/abiosoft/caddy-git /go/src/github.com/abiosoft/caddy-git
 
 # integrate git plugin
 RUN printf 'package caddyhttp\nimport _ "github.com/abiosoft/caddy-git"' > \
     /go/src/github.com/mholt/caddy/caddyhttp/git.go
+
+# hugo plugin
+RUN go get github.com/hacdias/filemanager/caddy/hugo
+
+# integrate hugo plugin
+RUN printf 'package caddyhttp\nimport _ "github.com/hacdias/filemanager/caddy/hugo"' > \
+    /go/src/github.com/mholt/caddy/caddyhttp/hugo.go
 
 # builder dependency
 RUN git clone https://github.com/caddyserver/builds /go/src/github.com/caddyserver/builds
@@ -54,6 +58,8 @@ COPY --from=builder /go/bin/caddy /usr/bin/caddy
 # validate install
 RUN /usr/bin/caddy -version
 RUN /usr/bin/caddy -plugins | grep http.git
+RUN /usr/bin/caddy -plugins | grep http.ipfilter
+RUN /usr/bin/caddy -plugins | grep http.hugo
 
 EXPOSE 80 443 2015
 VOLUME /root/.caddy /srv
