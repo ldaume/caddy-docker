@@ -41,7 +41,7 @@ RUN cd /go/src/github.com/mholt/caddy/caddy \
 FROM alpine:3.6
 LABEL maintainer "Lenny Daume <lenny@reinvent.software>"
 
-LABEL caddy_version="0.10.9"
+LABEL caddy_version="0.10.10"
 
 RUN apk add --no-cache openssh-client git
 
@@ -56,6 +56,8 @@ RUN /usr/bin/caddy -plugins | grep http.ipfilter
 EXPOSE 80 443 2015
 VOLUME /root/.caddy /srv
 WORKDIR /srv
+
+RUN printf "User-agent: *\nDisallow:" > /srv/robots.txt
 
 COPY Caddyfile /etc/Caddyfile
 COPY index.html /srv/index.html
