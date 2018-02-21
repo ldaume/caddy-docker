@@ -3,7 +3,7 @@
 #
 FROM golang:1.9-alpine as builder
 
-ARG version="0.10.10"
+ARG version="0.10.11"
 
 RUN apk add --no-cache curl git
 
@@ -41,7 +41,7 @@ RUN cd /go/src/github.com/mholt/caddy/caddy \
 FROM alpine:3.6
 LABEL maintainer "Lenny Daume <lenny@reinvent.software>"
 
-LABEL caddy_version="0.10.10"
+LABEL caddy_version="0.10.11"
 
 RUN apk add --no-cache openssh-client git
 
