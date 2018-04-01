@@ -3,7 +3,7 @@
 #
 FROM golang:1.9-alpine as builder
 
-ARG version="0.10.11"
+ARG version="0.10.12"
 
 RUN apk add --no-cache curl git
 
