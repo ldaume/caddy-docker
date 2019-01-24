@@ -1,9 +1,9 @@
 #
 # Builder
 #
-FROM golang:1.9-alpine as builder
+FROM golang:alpine as builder
 
-ARG version="0.10.14"
+ARG version="0.11.2"
 
 RUN apk add --no-cache curl git
 
@@ -38,10 +38,10 @@ RUN cd /go/src/github.com/mholt/caddy/caddy \
 #
 # Final stage
 #
-FROM alpine:3.6
+FROM alpine:3.8
 LABEL maintainer "Lenny Daume <lenny@reinvent.software>"
 
-LABEL caddy_version="0.10.14"
+LABEL caddy_version="0.11.2"
 
 RUN apk add --no-cache openssh-client git
 
