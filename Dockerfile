@@ -14,6 +14,7 @@ RUN git clone https://github.com/mholt/caddy -b "v${version}" /go/src/github.com
 
 # disable telemetry
 RUN sed -i 's/EnableTelemetry = true/EnableTelemetry = false/g' /go/src/github.com/mholt/caddy/caddy/caddymain/run.go 
+RUN cat /go/src/github.com/mholt/caddy/caddy/caddymain/run.go
 
 # ipfilter plugin
 RUN go get github.com/pyed/ipfilter
