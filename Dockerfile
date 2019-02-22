@@ -34,7 +34,6 @@ RUN git clone https://github.com/caddyserver/builds /go/src/github.com/caddyserv
 
 # build
 RUN cd /go/src/github.com/mholt/caddy/caddy \
-    && git checkout -f \
     && go run build.go \
     && mv caddy /go/bin
 
@@ -44,7 +43,7 @@ RUN cd /go/src/github.com/mholt/caddy/caddy \
 FROM alpine:3.8
 LABEL maintainer "Lenny Daume <lenny@reinvent.software>"
 
-LABEL caddy_version="0.11.2"
+LABEL caddy_version="0.11.3"
 
 RUN apk add --no-cache openssh-client git
 
