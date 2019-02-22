@@ -34,7 +34,6 @@ RUN git clone https://github.com/caddyserver/builds /go/src/github.com/caddyserv
 
 # build
 RUN cd /go/src/github.com/mholt/caddy/caddy \
-    && git checkout -f \
     && go run build.go \
     && mv caddy /go/bin
 
