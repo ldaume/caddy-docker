@@ -1,7 +1,7 @@
 #
 # Builder
 #
-FROM golang:alpine as builder
+FROM golang:alpine3.9 as builder
 
 ARG version="0.11.5"
 
