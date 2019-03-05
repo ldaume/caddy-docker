@@ -40,7 +40,7 @@ RUN cd /go/src/github.com/mholt/caddy/caddy \
 #
 # Final stage
 #
-FROM alpine:3.8
+FROM alpine:3.9
 LABEL maintainer "Lenny Daume <lenny@reinvent.software>"
 
 LABEL caddy_version="0.11.5"
