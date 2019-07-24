@@ -1,41 +1,16 @@
 #
 # Builder
 #
-FROM golang:alpine as builder
+FROM abiosoft/caddy:builder as builder
 
-ARG version="1.0.0"
+ARG version="1.0.1"
+ARG plugins="git,cors,realip,expires,cache,cloudflare,ipfilter"
 
-RUN apk add --no-cache curl git
+# process wrapper
+RUN go get -v github.com/abiosoft/parent
 
-# caddy
-RUN git clone https://github.com/mholt/caddy -b "v${version}" /go/src/github.com/mholt/caddy \
-    && cd /go/src/github.com/mholt/caddy \
-    && git checkout -b "v${version}"
+RUN VERSION=${version} PLUGINS=${plugins} ENABLE_TELEMETRY=false /bin/sh /usr/bin/builder.sh
 
-# disable telemetry
-RUN sed -i 's/EnableTelemetry = true/EnableTelemetry = false/g' /go/src/github.com/mholt/caddy/caddy/caddymain/run.go 
-
-# ipfilter plugin
-RUN go get github.com/pyed/ipfilter
-
-# integrate ipfilter plugin
-RUN printf 'package caddyhttp\nimport _ "github.com/pyed/ipfilter"' > \
-    /go/src/github.com/mholt/caddy/caddyhttp/ipfilter.go
-
-# git plugin
-RUN go get github.com/abiosoft/caddy-git
-
-# integrate git plugin
-RUN printf 'package caddyhttp\nimport _ "github.com/abiosoft/caddy-git"' > \
-    /go/src/github.com/mholt/caddy/caddyhttp/git.go
-
-# builder dependency
-RUN git clone https://github.com/caddyserver/builds /go/src/github.com/caddyserver/builds
-
-# build
-RUN cd /go/src/github.com/mholt/caddy/caddy \
-    && go run build.go \
-    && mv caddy /go/bin
 
 #
 # Final stage
@@ -43,12 +18,23 @@ RUN cd /go/src/github.com/mholt/caddy/caddy \
 FROM alpine
 LABEL maintainer "Lenny Daume <lenny@reinvent.software>"
 
-LABEL caddy_version="1.0.0"
+LABEL caddy_version="1.0.1"
 
-RUN apk add --no-cache openssh-client git
+# Let's Encrypt Agreement
+ENV ACME_AGREE="false"
+
+# Telemetry Stats
+ENV ENABLE_TELEMETRY="false"
+
+RUN apk add --no-cache \
+    ca-certificates \
+    git \
+    mailcap \
+    openssh-client \
+    tzdata
 
 # install caddy
-COPY --from=builder /go/bin/caddy /usr/bin/caddy
+COPY --from=builder /install/caddy /usr/bin/caddy
 
 # validate install
 RUN /usr/bin/caddy -version
