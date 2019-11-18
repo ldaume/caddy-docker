@@ -3,7 +3,7 @@
 #
 FROM abiosoft/caddy:builder as builder
 
-ARG version="1.0.1"
+ARG version="1.0.4"
 ARG plugins="git,cors,realip,expires,cache,cloudflare,ipfilter"
 
 # process wrapper
@@ -18,7 +18,7 @@ RUN VERSION=${version} PLUGINS=${plugins} ENABLE_TELEMETRY=false /bin/sh /usr/bi
 FROM alpine
 LABEL maintainer "Lenny Daume <lenny@reinvent.software>"
 
-LABEL caddy_version="1.0.1"
+LABEL caddy_version="1.0.4"
 
 # Let's Encrypt Agreement
 ENV ACME_AGREE="false"
